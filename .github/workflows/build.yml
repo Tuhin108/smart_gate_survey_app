@@ -28,6 +28,9 @@ jobs:
           pip install --upgrade cython
           pip install --upgrade buildozer
 
+      - name: Clean previous build
+        run: buildozer clean
+
       - name: Build the APK with Buildozer
         run: |
           # 1. Update/download the Buildozer-managed Android SDK and NDK.
