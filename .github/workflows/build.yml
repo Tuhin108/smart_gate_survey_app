@@ -21,7 +21,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          # Install core build dependencies
+          # Install core build dependencies and autotools for macro resolution
           sudo apt-get install -y git zip unzip autoconf automake autopoint libtool m4 pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
           # Install 32-bit libraries required for some Android SDK tools like AIDL
           sudo dpkg --add-architecture i386
@@ -32,7 +32,7 @@ jobs:
         run: |
           pip install --upgrade cython
           pip install --upgrade buildozer
-          pip install --upgrade python-for-android # Ensure python-for-android is updated
+          pip install --upgrade python-for-android # Ensure python-for-android is updated for compatibility
 
       - name: Build the APK with Buildozer
         run: |
