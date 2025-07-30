@@ -12,48 +12,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
+      # Use the specialized Kivy build action
+      # This action handles setting up Java, Python, Buildozer,
+      # Android SDK, NDK, and running the buildozer commands.
+      - name: Build Android APK with Kivy Action
+        uses: ArtemSBulgakov/build-kivy-app-action@v1
         with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          # Install core build dependencies, autotools, and additional macro archives
-          sudo apt-get install -y git zip unzip autoconf automake autopoint libtool m4 autoconf-archive pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
-          # Install 32-bit libraries required for some Android SDK tools like AIDL
-          sudo dpkg --add-architecture i386
-          sudo apt-get update
-          sudo apt-get install -y libc6:i386 libstdc++6:i386 zlib1g:i386
-
-      - name: Install Python and Buildozer
-        run: |
-          pip install --upgrade cython
-          pip install --upgrade buildozer
-          pip install --upgrade python-for-android # Ensure python-for-android is updated for compatibility
-
-      - name: Build the APK with Buildozer
-        run: |
-          # 1. Update/download the Buildozer-managed Android SDK and NDK.
-          # This creates the necessary directory structure.
-          buildozer android update
-
-          # 2. Define the path to the sdkmanager for clarity.
-          SDKMANAGER="/home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager"
-
-          # 3. Explicitly install the required tools and accept licenses.
-          # This is the definitive fix to ensure 'aidl' and other tools are found.
-          yes | $SDKMANAGER --licenses > /dev/null
-          $SDKMANAGER "platform-tools" "platforms;android-31" "build-tools;31.0.0" > /dev/null
-          
-          # 4. Now, build the APK with all dependencies and licenses in place.
-          # Added -v for verbose output in case of other errors.
-          buildozer -v android debug
+          # The path to your buildozer.spec file (usually in the root of your repo)
+          buildozer_spec: 'buildozer.spec'
+          # You can specify the build profile, e.g., 'debug' or 'release'
+          # build_profile: 'debug' # Default is 'debug' if not specified
 
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: smart-survey-apk
-          path: bin/*.apk
+          path: bin/*.apk # The APK will be generated in the 'bin' directory
