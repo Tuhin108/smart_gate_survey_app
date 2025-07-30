@@ -22,8 +22,8 @@ source.exclude_dirs = tests, bin, venv, .venv, __pycache__
 version = 0.1
 
 # (list) Kivy requirements
-# Added 'pillow' for robust image handling and 'android' for better tooling.
-requirements = python3,kivy,plyer,pillow,android
+# CORRECTED: Specifying a stable Python version to fix build tool conflicts.
+requirements = python3.10,kivy,plyer,pillow,android
 
 # (str) Presplash image
 presplash.filename = %(source.dir)s/placeholder.png
