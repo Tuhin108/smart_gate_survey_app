@@ -11,7 +11,6 @@ package.domain = org.mycompany.smartsurey
 
 # (str) Source code where the main.py live
 source.dir = .
-
 # (list) Source files to include (let buildozer find them)
 source.include_exts = py,png,jpg,kv,atlas
 
@@ -41,13 +40,15 @@ orientation = portrait
 # (list) Permissions
 android.permissions = CAMERA, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE
 
-# (int) Android API to use. 31 is a stable target.
+# (int) Android API to use.
+# 31 is a stable target.
 android.api = 31
 
 # (int) Minimum API required
 android.minapi = 21
 
-# (str) Android NDK version to use. Specifying this helps prevent issues.
+# (str) Android NDK version to use.
+# Specifying this helps prevent issues.
 android.ndk = 25b
 
 # (list) Architectures to build for
@@ -56,12 +57,20 @@ android.archs = arm64-v8a, armeabi-v7a
 # (str) The Android SDK version to use
 # android.sdk = 24
 
-# (str) The Android NDK path. If not set, will be downloaded automatically.
+# (str) The Android NDK path.
+# If not set, will be downloaded automatically.
 # android.ndk_path =
 
-# (str) The Android SDK path. If not set, will be downloaded automatically.
-# android.sdk_path =
+# (str) The Android SDK path.
+# If not set, will be downloaded automatically.
+# android.sdk_path = 
 
+
+# (bool) If True, then automatically accept SDK license 
+# agreements. This is intended for automation only. If set to False, 
+# the default, you will be shown the license when first running 
+# buildozer.
+android.accept_sdk_license = True
 
 [buildozer]
 
