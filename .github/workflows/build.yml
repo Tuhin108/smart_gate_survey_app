@@ -28,13 +28,15 @@ jobs:
           pip install --upgrade cython
           pip install --upgrade buildozer
 
-      - name: Accept Android SDK licenses
-        run: |
-          # This step is crucial to ensure all build-tools are available
-          yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
-
       - name: Build the APK with Buildozer
         run: |
+          # 1. Update/download the Buildozer-managed Android SDK
+          buildozer android update
+
+          # 2. Accept the licenses for the SDK that Buildozer just downloaded
+          yes | /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+
+          # 3. Now, build the APK with all dependencies and licenses in place
           buildozer android debug
 
       - name: Upload APK as Artifact
