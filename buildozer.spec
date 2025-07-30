@@ -1,81 +1,80 @@
+# buildozer.spec
+# This file describes the application.
+# For more information on buildozer.spec, see:
+# http://kivy.org/docs/packaging/buildozer.html
+
 [app]
 
 # (str) Title of your application
-title = Smart Survey
+title = Smart Gate Survey
 
 # (str) Package name
-package.name = smartsurvey
+package.name = com.yourcompany.smartgatesurvey
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.mycompany.smartsurey
+package.domain = yourcompany.com
 
-# (str) Source code where the main.py live
+# (str) Source code where the main.py resides
 source.dir = .
-# (list) Source files to include (let buildozer find them)
-source.include_exts = py,png,jpg,kv,atlas
 
-# (list) List of modules to support for auto-detection
-source.exclude_dirs = tests, bin, venv, .venv, __pycache__
+# (list) Application requirements
+# Add 'android' for Android-specific APIs (e.g., camera access via Plyer)
+# Changed python3.10 to python3.11 to align with available p4a distributions
+requirements = python3.11,kivy,plyer,pillow,android
 
-# (str) Application versioning
-version = 0.1
+# (str) The entry point of your application
+main.py = main.py
 
-# (list) Kivy requirements
-# CORRECTED: Specifying a stable Python version to fix build tool conflicts.
-requirements = python3.10,kivy,plyer,pillow,android
+# (list) Android permissions
+android.permissions = CAMERA,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
 
-# (str) Presplash image
-presplash.filename = %(source.dir)s/placeholder.png
-
-# (str) Icon filename
-icon.filename = %(source.dir)s/placeholder.png
-
-# (list) Supported orientations
-orientation = portrait
-
-#
-# Android specific
-#
-
-# (list) Permissions
-android.permissions = CAMERA, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE
-
-# (int) Android API to use.
-# 31 is a stable target.
+# (int) Android API target (e.g., 27, 28, 29, 30, 31, 32, 33)
+# Keep this aligned with recent Android versions for better compatibility
 android.api = 31
 
-# (int) Minimum API required
-android.minapi = 21
-
-# (str) Android NDK version to use.
-# Specifying this helps prevent issues.
+# (str) Android NDK version (e.g., 19b, 20b, 21b, 22b, 25b)
 android.ndk = 25b
 
-# (list) Architectures to build for
-android.archs = arm64-v8a, armeabi-v7a
-
-# (str) The Android SDK version to use
-# android.sdk = 24
-
-# (str) The Android NDK path.
-# If not set, will be downloaded automatically.
-# android.ndk_path =
-
-# (str) The Android SDK path.
-# If not set, will be downloaded automatically.
-# android.sdk_path = 
-
-
-# (bool) If True, then automatically accept SDK license 
-# agreements. This is intended for automation only. If set to False, 
-# the default, you will be shown the license when first running 
-# buildozer.
+# (bool) Accept Android SDK licenses automatically (required for CI/CD)
 android.accept_sdk_license = True
 
-[buildozer]
-
-# (int) Log level (0 = error, 1 = info, 2 = debug (with command output))
+# (int) Log level (0=none, 1=error, 2=warning, 3=info, 4=debug)
 log_level = 2
 
-# (int) Display warning if buildozer is run as root (0 = False, 1 = True)
-warn_on_root = 1
+# (list) Application version
+version = 0.1
+
+# (bool) If your app doesn't need internet permission, set this to False
+# internet = True
+
+# (list) List of target architectures to compile for
+# This ensures compatibility across a wider range of Android devices
+android.archs = arm64-v8a,armeabi-v7a
+
+# (str) Path to the Android SDK (if not set in environment variables)
+# android.sdk = /opt/android-sdk
+
+# (str) Path to the Android NDK (if not set in environment variables)
+# android.ndk = /opt/android-ndk
+
+# (bool) Enable debug mode (more verbose logging, non-optimized build)
+# Set to False for release builds
+debug = True
+
+# (list) Exclude files from the APK
+# source.exclude_exts = pyc,pyo,orig
+# source.exclude_dirs = tests,bin,build,dist
+
+# (str) Icon file
+# icon.filename = icon.png
+
+# (str) Splash screen file
+# splash.filename = splash.png
+
+# (str) Orientation of the application (portrait, landscape, sensor)
+orientation = portrait
+
+[buildozer]
+# (str) The Buildozer version to use. 'stable' for the latest stable release.
+# You can also specify a specific version like '1.2.0' or 'master' for the latest development version.
+buildozer_version = stable
