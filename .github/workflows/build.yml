@@ -12,11 +12,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Use the specialized Kivy build action
+      # Use the specialized Kivy Buildozer action
       # This action handles setting up Java, Python, Buildozer,
       # Android SDK, NDK, and running the buildozer commands.
-      - name: Build Android APK with Kivy Action
-        uses: ArtemSBulgakov/build-kivy-app-action@v1
+      - name: Build Android APK with Buildozer Action
+        uses: ArtemSBulgakov/buildozer-action@v1 # Corrected action name
         with:
           # The path to your buildozer.spec file (usually in the root of your repo)
           buildozer_spec: 'buildozer.spec'
