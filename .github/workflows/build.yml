@@ -16,15 +16,21 @@ jobs:
       # This action handles setting up Java, Python, Buildozer,
       # Android SDK, NDK, and running the buildozer commands.
       - name: Build Android APK with Buildozer Action
-        uses: ArtemSBulgakov/buildozer-action@v1 # Corrected action name
+        uses: ArtemSBulgakov/buildozer-action@v1
         with:
-          # The path to your buildozer.spec file (usually in the root of your repo)
-          buildozer_spec: 'buildozer.spec'
-          # You can specify the build profile, e.g., 'debug' or 'release'
-          # build_profile: 'debug' # Default is 'debug' if not specified
+          # The command to execute buildozer.
+          # The action will automatically find buildozer.spec in the 'workdir'.
+          command: 'buildozer android debug'
+          # The root of your repository, usually '.'
+          repository_root: '.'
+          # The working directory where your buildozer.spec file is located.
+          # Assuming it's in the root of your repository.
+          workdir: '.'
+          # You can specify a particular buildozer version, or 'stable' for the latest stable.
+          buildozer_version: 'stable'
 
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: smart-survey-apk
-          path: bin/*.apk # The APK will be generated in the 'bin' directory
+          path: bin/*.apk # The APK will be generated in the 'bin' directory relative to workdir
