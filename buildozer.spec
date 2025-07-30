@@ -23,7 +23,7 @@ version = 1.0
 # Explicitly setting Python 3.11.5 as seen in logs for better compatibility.
 # Removed opencv-python temporarily to isolate build issues.
 # Removed explicit cython version to let buildozer pick compatible.
-requirements = python==3.11.5,kivy==2.3.0,plyer,pillow
+requirements = python==3.9.9,kivy==2.3.0,plyer,pillow
 
 # (str) App orientation
 orientation = landscape
