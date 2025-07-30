@@ -1,0 +1,299 @@
+# survey.kv (Enhanced UI/UX Version)
+# A more polished and professional design for the Smart Survey App
+
+# Define some base colors for a consistent theme
+#:set primary_color (0.12, 0.58, 0.95, 1)  # A nice blue
+#:set light_gray (0.9, 0.9, 0.9, 1)
+#:set dark_text (0.1, 0.1, 0.1, 1)
+#:set light_text (0.95, 0.95, 0.95, 1)
+#:set background_color (0.98, 0.98, 0.98, 1)
+
+<HomeScreen>:
+    canvas.before:
+        Color:
+            rgba: 38/255, 50/255, 56/255, 1 # Dark Blue-Gray
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: ('40dp', '80dp', '40dp', '40dp')
+        spacing: '20dp'
+
+        Image:
+            source: 'placeholder.png' # You can use your logo here
+            size_hint_y: None
+            height: '100dp'
+            opacity: 0.9
+
+        Label:
+            text: 'A-1 Launchpad Survey'
+            font_size: '28sp'
+            bold: True
+            color: light_text
+
+        Label:
+            text: 'Begin a new site survey by selecting the gate type below.'
+            font_size: '16sp'
+            color: light_gray
+            halign: 'center'
+
+        BoxLayout:
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+            spacing: '15dp'
+            padding: ('20dp', '40dp')
+
+            Button:
+                text: 'New Sliding Gate Survey'
+                font_size: '18sp'
+                size_hint_y: None
+                height: '56dp'
+                background_color: (0,0,0,0) # Transparent background
+                canvas.before:
+                    Color:
+                        rgba: primary_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [28,]
+                on_press: app.root.current = 'sliding_gate'
+
+            Button:
+                text: 'New Swing Gate Survey'
+                font_size: '18sp'
+                size_hint_y: None
+                height: '56dp'
+                background_color: (0,0,0,0) # Transparent background
+                canvas.before:
+                    Color:
+                        rgba: (0.2, 0.7, 0.5, 1) # A nice green
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [28,]
+                on_press: app.root.current = 'swing_gate'
+
+
+<Card@BoxLayout>:
+    padding: '12dp'
+    spacing: '12dp'
+    orientation: 'vertical'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1 # White background
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15,]
+        Color:
+            rgba: 0, 0, 0, 0.05 # Subtle shadow
+        RoundedRectangle:
+            pos: self.x - 2, self.y - 2
+            size: self.width + 4, self.height + 4
+            radius: [16,]
+
+
+<StyledTextInput@TextInput>:
+    multiline: False
+    write_tab: False
+    size_hint_y: None
+    height: '48dp'
+    padding: [10, 15]
+    background_color: (0,0,0,0)
+    canvas.before:
+        Color:
+            rgba: light_gray
+        Line:
+            width: 1.2
+            rectangle: self.x, self.y, self.width, self.height
+
+<StyledSpinner@Spinner>:
+    size_hint_y: None
+    height: '48dp'
+    background_color: (0,0,0,0)
+    color: dark_text
+    canvas.before:
+        Color:
+            rgba: light_gray
+        Line:
+            width: 1.2
+            rectangle: self.x, self.y, self.width, self.height
+
+<GateSurveyScreen>:
+    canvas.before:
+        Color:
+            rgba: background_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '10dp'
+        spacing: '10dp'
+
+        # --- Top Bar ---
+        BoxLayout:
+            size_hint_y: None
+            height: '56dp'
+            Button:
+                text: 'Back'
+                size_hint_x: None
+                width: '70dp'
+                background_color: 0,0,0,0
+                color: primary_color
+                on_press: app.root.current = 'home'
+            Label:
+                text: root.gate_type + ' Gate Survey'
+                font_size: '22sp'
+                bold: True
+                color: dark_text
+
+        # --- Main Content ScrollView ---
+        ScrollView:
+            GridLayout:
+                cols: 1
+                spacing: '15dp'
+                size_hint_y: None
+                height: self.minimum_height
+
+                # --- Image Card ---
+                Card:
+                    size_hint_y: None
+                    height: 350
+                    RelativeLayout:
+                        Image:
+                            id: site_image
+                            source: 'placeholder.png'
+                            allow_stretch: True
+                            keep_ratio: True
+                        Image:
+                            id: superimposed_gate
+                            source: 'a.png'
+                            allow_stretch: True
+                            keep_ratio: True
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: '48dp'
+                        Button:
+                            text: '< Prev Gate'
+                            on_press: root.prev_gate_image()
+                        Button:
+                            text: 'Take Picture'
+                            background_color: primary_color
+                            on_press: root.take_picture()
+                        Button:
+                            text: 'Next Gate >'
+                            on_press: root.next_gate_image()
+
+                # --- Dimensions Card ---
+                Card:
+                    size_hint_y: None
+                    height: self.minimum_height
+                    GridLayout:
+                        cols: 1
+                        spacing: '10dp'
+                        size_hint_y: None
+                        height: self.minimum_height
+
+                        Label:
+                            text: 'Site Dimensions & Details'
+                            font_size: '18sp'
+                            bold: True
+                            color: dark_text
+                            size_hint_y: None
+                            height: '30dp'
+
+                        Label:
+                            text: 'Clear Opening (m):'
+                            halign: 'left'
+                            text_size: self.size
+                            color: dark_text
+                        StyledTextInput:
+                            id: clear_opening
+
+                        Label:
+                            text: 'Height Required (m):'
+                            halign: 'left'
+                            text_size: self.size
+                            color: dark_text
+                        StyledTextInput:
+                            id: height_required
+
+                        # --- Sliding Gate Specific ---
+                        BoxLayout:
+                            orientation: 'vertical'
+                            size_hint_y: None
+                            height: self.minimum_height if root.gate_type == 'Sliding' else 0
+                            opacity: 1 if root.gate_type == 'Sliding' else 0
+                            Label:
+                                text: 'Parking Space (m):'
+                                halign: 'left'
+                                text_size: self.size
+                                color: dark_text
+                            StyledTextInput:
+                                id: parking_space
+
+                        # --- Swing Gate Specific ---
+                        BoxLayout:
+                            orientation: 'vertical'
+                            size_hint_y: None
+                            height: self.minimum_height if root.gate_type == 'Swing' else 0
+                            opacity: 1 if root.gate_type == 'Swing' else 0
+                            Label:
+                                text: 'Opening Angle (deg):'
+                                halign: 'left'
+                                text_size: self.size
+                                color: dark_text
+                            StyledTextInput:
+                                id: opening_angle
+
+                        Label:
+                            text: 'Opening Direction:'
+                            halign: 'left'
+                            text_size: self.size
+                            color: dark_text
+                        StyledSpinner:
+                            id: opening_direction
+                            text: 'Select'
+                            values: ['Left', 'Right', 'Both']
+
+                        BoxLayout:
+                            size_hint_y: None
+                            height: '48dp'
+                            Label:
+                                text: 'Cabling Provision:'
+                                color: dark_text
+                            CheckBox:
+                                id: cabling_provision
+                                size_hint_x: 0.3
+
+                        BoxLayout:
+                            size_hint_y: None
+                            height: '48dp'
+                            Label:
+                                text: 'Material Storage:'
+                                color: dark_text
+                            CheckBox:
+                                id: material_storage
+                                size_hint_x: 0.3
+
+                # --- Action Buttons ---
+                BoxLayout:
+                    size_hint_y: None
+                    height: '56dp'
+                    spacing: '10dp'
+                    Button:
+                        text: 'Get Recommendation'
+                        background_color: (0.1, 0.5, 0.8, 1)
+                        on_press: root.get_recommendation()
+                    Button:
+                        text: 'Save Survey'
+                        background_color: (0.2, 0.8, 0.2, 1)
+                        on_press: root.save_survey()
+
+<SlidingGateScreen>:
+<SwingGateScreen>:
