@@ -39,6 +39,13 @@ class GateSurveyScreen(Screen):
         # Make sure your gate images (a.png, b.png, etc.) are in your project folder
         self.gate_images = ['a.png', 'b.png', 'c.png', 'd.png', 'e.png', 'f.png']
         self.current_gate_image_index = 0
+        # Define the path where the photo will be saved.
+        # App.get_running_app().user_data_dir is a safe place to store app data.
+        # This path is set once per instance, but the actual file might be
+        # written by plyer to a slightly different temporary location before
+        # the callback, so we'll rely on the 'filepath' argument in camera_callback.
+        self.picture_path = os.path.join(App.get_running_app().user_data_dir, 'site_photo.jpg')
+
 
     def on_enter(self, *args):
         """Called when the screen is displayed."""
@@ -51,9 +58,6 @@ class GateSurveyScreen(Screen):
         This will trigger the native camera app on Android.
         """
         try:
-            # Define the path where the photo will be saved.
-            # App.get_running_app().user_data_dir is a safe place to store app data.
-            self.picture_path = os.path.join(App.get_running_app().user_data_dir, 'site_photo.jpg')
             camera.take_picture(filename=self.picture_path,
                                 on_complete=self.camera_callback)
         except NotImplementedError:
@@ -64,10 +68,10 @@ class GateSurveyScreen(Screen):
     def camera_callback(self, filepath):
         """
         Callback function that is called after the picture is taken.
+        The 'filepath' argument is the actual path where plyer saved the image.
         """
-        # The filepath given by plyer might be cached, so we check our intended path.
-        if os.path.exists(self.picture_path):
-            self.ids.site_image.source = self.picture_path
+        if filepath: # Check if a filepath was actually provided by plyer
+            self.ids.site_image.source = filepath # Use the provided filepath directly
             self.ids.site_image.reload() # Crucial to force Kivy to reload the image
         else:
             self.show_popup("Info", "No picture was taken or it was not saved correctly.")
